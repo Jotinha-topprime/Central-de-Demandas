@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Demandas — Marketing</title>
+  <link rel="icon" type="image/png" href="img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app" data-theme="topprime">
+
+  <!-- ══════════════════════════════════════════════════
+       TOPBAR GLOBAL — logo + Trello global + badge
+       ══════════════════════════════════════════════════ -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2"  y="2"  width="7" height="7" rx="1.5"/>
+          <rect x="11" y="2"  width="7" height="7" rx="1.5" opacity="0.55"/>
+          <rect x="2"  y="11" width="7" height="7" rx="1.5" opacity="0.55"/>
+          <rect x="11" y="11" width="7" height="7" rx="1.5" opacity="0.25"/>
+        </svg>
+      </div>
+      <div>
+        <div class="topbar-title">Central de Demandas</div>
+        <div class="topbar-sub">Grupo · Marketing</div>
+      </div>
+    </div>
+
+    <!-- Trello global no header -->
+    <div class="topbar-right">
+      <button class="trello-header-btn" id="trelloBtnHeader" onclick="toggleTrelloPanel()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.3 3 3 3h18c1.7 0 3-1.3 3-3V3c0-1.7-1.3-3-3-3zM10.4 17.6c0 .7-.6 1.2-1.2 1.2H4.8c-.7 0-1.2-.6-1.2-1.2V5.6c0-.7.6-1.2 1.2-1.2h4.4c.7 0 1.2.6 1.2 1.2v12zm9.6-5.2c0 .7-.6 1.2-1.2 1.2h-4.4c-.7 0-1.2-.6-1.2-1.2V5.6c0-.7.6-1.2 1.2-1.2h4.4c.7 0 1.2.6 1.2 1.2v6.8z"/>
+        </svg>
+        <span id="trello-header-label">Trello</span>
+        <span class="trello-dot" id="trelloDot"></span>
+      </button>
+      <span class="badge-mkt">MARKETING</span>
+    </div>
+  </div>
+
+  <!-- Painel Trello global (dropdown) — apenas status, sem campos de config -->
+  <div class="trello-panel" id="trelloPanel">
+    <div class="trello-panel-inner">
+      <div class="trello-panel-header">
+        <span>Integração Trello</span>
+        <span class="trello-status-badge" id="trelloStatusBadge">Verificando…</span>
+      </div>
+      <div class="trello-fields">
+        <!-- Mensagem de status da integração — atualizada via js/trello.js -->
+        <p class="trello-help" id="trelloPanelInfo" style="margin:0;line-height:1.6">
+          Verificando conexão com o servidor…
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       NAVEGAÇÃO — abas das empresas
+       ══════════════════════════════════════════════════ -->
+  <div class="nav-companies" id="companyNav">
+    <div class="nav-tab active" data-company="topprime">Top Prime</div>
+    <div class="nav-tab"       data-company="planoa">Plano A</div>
+    <div class="nav-tab"       data-company="alg3">ALG3</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       CONTEÚDO PRINCIPAL
+       ══════════════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- ─────────────── ABA TOP PRIME ─────────────── -->
+    <div class="tab-content active" id="tab-topprime">
+      <div class="company-header">
+        <div class="company-icon"><img src="img/logo-topprime.png" alt="Logo Top Prime"></div>
+        <div class="company-info">
+          <h2>Top Prime</h2>
+          <p>Solicite materiais e campanhas para o setor de Marketing</p>
+        </div>
+        <div class="company-header-stats">
+          <div class="hs-item"><span id="stp-total">0</span><small>Total</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="stp-ag">0</span><small>Aguardando</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="stp-prod">0</span><small>Em produção</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="stp-ok">0</span><small>Concluídas</small></div>
+        </div>
+      </div>
+
+      <div id="form-topprime">
+        <!-- Identificação -->
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Identificação</div>
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label">Nome completo <em>*</em></label>
+              <input type="text" placeholder="Ex: Ocenildo" id="tp-nome">
+            </div>
+            <div class="field-group">
+              <label class="field-label">E-mail <em>*</em></label>
+              <input type="email" placeholder="seu email" id="tp-email">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Setor solicitante <em>*</em></label>
+            <select class="sector-select" id="tp-setor">
+              <option value="">Selecione o setor</option>
+              <option>Comercial</option><option>Financeiro</option>
+              <option>Operações</option><option>RH</option>
+              <option>Diretoria</option><option>TI</option><option>Jurídico</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tipo de material -->
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Tipo de material</div>
+          <div class="material-grid" id="mat-topprime">
+            <div class="mat-option" data-val="Post redes sociais"><span class="mat-icon">📱</span><span class="mat-label">Post redes sociais</span></div>
+            <div class="mat-option" data-val="Banner / flyer"><span class="mat-icon">🖼</span><span class="mat-label">Banner / flyer</span></div>
+            <div class="mat-option" data-val="Apresentação"><span class="mat-icon">📊</span><span class="mat-label">Apresentação</span></div>
+            <div class="mat-option" data-val="E-mail mkt"><span class="mat-icon">✉️</span><span class="mat-label">E-mail mkt</span></div>
+            <div class="mat-option" data-val="Vídeo / reels"><span class="mat-icon">🎬</span><span class="mat-label">Vídeo / reels</span></div>
+            <div class="mat-option" data-val="Campanha"><span class="mat-icon">📣</span><span class="mat-label">Campanha</span></div>
+            <div class="mat-option" data-val="Impressos"><span class="mat-icon">🖨</span><span class="mat-label">Impressos</span></div>
+            <div class="mat-option" data-val="Landing page"><span class="mat-icon">🌐</span><span class="mat-label">Landing page</span></div>
+            <div class="mat-option" data-val="Outro"><span class="mat-icon">➕</span><span class="mat-label">Outro</span></div>
+          </div>
+        </div>
+
+        <!-- Briefing -->
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Briefing da demanda</div>
+          <div class="field-group">
+            <label class="field-label">Título da demanda <em>*</em></label>
+            <input type="text" placeholder="Ex: Post de lançamento do produto X" id="tp-titulo">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Objetivo <em>*</em></label>
+            <textarea placeholder="O que você quer comunicar? Qual é a meta desta peça?" id="tp-objetivo"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Público-alvo</label>
+            <input type="text" placeholder="Ex: Clientes B2B, faixa etária 30–50 anos" id="tp-publico">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Copy sugerida</label>
+            <textarea placeholder="Texto, slogan ou ideia central que deve estar no material" id="tp-copy"></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label">Formato / dimensão</label>
+              <input type="text" placeholder="Ex: 1080×1080 px, A4, story" id="tp-formato">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Referências visuais</label>
+              <input type="text" placeholder="Link, concorrente ou estilo" id="tp-ref">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Observações / restrições</label>
+            <textarea placeholder="Algo que não pode aparecer, cores obrigatórias, compliance…" id="tp-obs"></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label">Prazo solicitado <em>*</em></label>
+              <input type="date" id="tp-prazo">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Prioridade <em>*</em></label>
+              <div class="priority-row" id="prio-topprime">
+                <div class="prio-btn p-baixa" data-val="Baixa">Baixa</div>
+                <div class="prio-btn p-media" data-val="Média">Média</div>
+                <div class="prio-btn p-alta"  data-val="Alta">Alta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn-cancel" onclick="clearForm('topprime')">Limpar</button>
+          <button class="btn-submit" onclick="submitDemand('topprime')">Enviar demanda</button>
+        </div>
+      </div>
+
+      <!-- Lista de demandas -->
+      <div class="section-card list-card">
+        <div class="section-title"><span class="section-bar"></span>Demandas recentes</div>
+        <div class="demand-list" id="list-topprime">
+          <p class="empty-msg">Nenhuma demanda enviada ainda.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ─────────────── ABA PLANO A ─────────────── -->
+    <div class="tab-content" id="tab-planoa">
+      <div class="company-header">
+        <div class="company-icon"><img src="img/logo-planoa.png" alt="Logo Plano A"></div>
+        <div class="company-info">
+          <h2>Plano A</h2>
+          <p>Solicite materiais e campanhas para o setor de Marketing</p>
+        </div>
+        <div class="company-header-stats">
+          <div class="hs-item"><span id="spa-total">0</span><small>Total</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="spa-ag">0</span><small>Aguardando</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="spa-prod">0</span><small>Em produção</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="spa-ok">0</span><small>Concluídas</small></div>
+        </div>
+      </div>
+
+      <div id="form-planoa">
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Identificação</div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Nome completo <em>*</em></label><input type="text" placeholder="Ex: Thaynara Clemente" id="pa-nome"></div>
+            <div class="field-group"><label class="field-label">E-mail <em>*</em></label><input type="email" placeholder="seu email" id="pa-email"></div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Setor solicitante <em>*</em></label>
+            <select class="sector-select" id="pa-setor">
+              <option value="">Selecione o setor</option>
+              <option>Comercial</option><option>Financeiro</option>
+              <option>Operações</option><option>RH</option>
+              <option>Diretoria</option><option>Atendimento</option><option>Produto</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Tipo de material</div>
+          <div class="material-grid" id="mat-planoa">
+            <div class="mat-option" data-val="Post redes sociais"><span class="mat-icon">📱</span><span class="mat-label">Post redes sociais</span></div>
+            <div class="mat-option" data-val="Banner / flyer"><span class="mat-icon">🖼</span><span class="mat-label">Banner / flyer</span></div>
+            <div class="mat-option" data-val="Apresentação"><span class="mat-icon">📊</span><span class="mat-label">Apresentação</span></div>
+            <div class="mat-option" data-val="E-mail mkt"><span class="mat-icon">✉️</span><span class="mat-label">E-mail mkt</span></div>
+            <div class="mat-option" data-val="Vídeo / reels"><span class="mat-icon">🎬</span><span class="mat-label">Vídeo / reels</span></div>
+            <div class="mat-option" data-val="Campanha"><span class="mat-icon">📣</span><span class="mat-label">Campanha</span></div>
+            <div class="mat-option" data-val="Impressos"><span class="mat-icon">🖨</span><span class="mat-label">Impressos</span></div>
+            <div class="mat-option" data-val="Landing page"><span class="mat-icon">🌐</span><span class="mat-label">Landing page</span></div>
+            <div class="mat-option" data-val="Outro"><span class="mat-icon">➕</span><span class="mat-label">Outro</span></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Briefing da demanda</div>
+          <div class="field-group"><label class="field-label">Título da demanda <em>*</em></label><input type="text" placeholder="Ex: Banner campanha trimestral" id="pa-titulo"></div>
+          <div class="field-group"><label class="field-label">Objetivo <em>*</em></label><textarea placeholder="O que você quer comunicar?" id="pa-objetivo"></textarea></div>
+          <div class="field-group"><label class="field-label">Público-alvo</label><input type="text" placeholder="Ex: Novos clientes, segmento de saúde" id="pa-publico"></div>
+          <div class="field-group"><label class="field-label">Copy sugerida</label><textarea placeholder="Texto, slogan ou ideia central" id="pa-copy"></textarea></div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Formato / dimensão</label><input type="text" placeholder="Ex: A3, 1920×1080" id="pa-formato"></div>
+            <div class="field-group"><label class="field-label">Referências visuais</label><input type="text" placeholder="Link ou descrição" id="pa-ref"></div>
+          </div>
+          <div class="field-group"><label class="field-label">Observações / restrições</label><textarea placeholder="Compliance, restrições de cor…" id="pa-obs"></textarea></div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Prazo solicitado <em>*</em></label><input type="date" id="pa-prazo"></div>
+            <div class="field-group">
+              <label class="field-label">Prioridade <em>*</em></label>
+              <div class="priority-row" id="prio-planoa">
+                <div class="prio-btn p-baixa" data-val="Baixa">Baixa</div>
+                <div class="prio-btn p-media" data-val="Média">Média</div>
+                <div class="prio-btn p-alta"  data-val="Alta">Alta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn-cancel" onclick="clearForm('planoa')">Limpar</button>
+          <button class="btn-submit" onclick="submitDemand('planoa')">Enviar demanda</button>
+        </div>
+      </div>
+
+      <div class="section-card list-card">
+        <div class="section-title"><span class="section-bar"></span>Demandas recentes</div>
+        <div class="demand-list" id="list-planoa"><p class="empty-msg">Nenhuma demanda enviada ainda.</p></div>
+      </div>
+    </div>
+
+
+    <!-- ─────────────── ABA ALG3 ─────────────── -->
+    <div class="tab-content" id="tab-alg3">
+      <div class="company-header">
+        <div class="company-icon"><img src="img/logo-alg3.png" alt="Logo ALG3"></div>
+        <div class="company-info">
+          <h2>ALG3</h2>
+          <p>Solicite materiais e campanhas para o setor de Marketing</p>
+        </div>
+        <div class="company-header-stats">
+          <div class="hs-item"><span id="sa3-total">0</span><small>Total</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="sa3-ag">0</span><small>Aguardando</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="sa3-prod">0</span><small>Em produção</small></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span id="sa3-ok">0</span><small>Concluídas</small></div>
+        </div>
+      </div>
+
+      <div id="form-alg3">
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Identificação</div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Nome completo <em>*</em></label><input type="text" placeholder="Ex: Lidiane" id="a3-nome"></div>
+            <div class="field-group"><label class="field-label">E-mail <em>*</em></label><input type="email" placeholder="seu email" id="a3-email"></div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Setor solicitante <em>*</em></label>
+            <select class="sector-select" id="a3-setor">
+              <option value="">Selecione o setor</option>
+              <option>Comercial</option><option>Financeiro</option>
+              <option>Operações</option><option>RH</option>
+              <option>Diretoria</option><option>Logística</option><option>Projetos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Tipo de material</div>
+          <div class="material-grid" id="mat-alg3">
+            <div class="mat-option" data-val="Post redes sociais"><span class="mat-icon">📱</span><span class="mat-label">Post redes sociais</span></div>
+            <div class="mat-option" data-val="Banner / flyer"><span class="mat-icon">🖼</span><span class="mat-label">Banner / flyer</span></div>
+            <div class="mat-option" data-val="Apresentação"><span class="mat-icon">📊</span><span class="mat-label">Apresentação</span></div>
+            <div class="mat-option" data-val="E-mail mkt"><span class="mat-icon">✉️</span><span class="mat-label">E-mail mkt</span></div>
+            <div class="mat-option" data-val="Vídeo / reels"><span class="mat-icon">🎬</span><span class="mat-label">Vídeo / reels</span></div>
+            <div class="mat-option" data-val="Campanha"><span class="mat-icon">📣</span><span class="mat-label">Campanha</span></div>
+            <div class="mat-option" data-val="Impressos"><span class="mat-icon">🖨</span><span class="mat-label">Impressos</span></div>
+            <div class="mat-option" data-val="Landing page"><span class="mat-icon">🌐</span><span class="mat-label">Landing page</span></div>
+            <div class="mat-option" data-val="Outro"><span class="mat-icon">➕</span><span class="mat-label">Outro</span></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title"><span class="section-bar"></span>Briefing da demanda</div>
+          <div class="field-group"><label class="field-label">Título da demanda <em>*</em></label><input type="text" placeholder="Ex: Comunicado interno novo processo" id="a3-titulo"></div>
+          <div class="field-group"><label class="field-label">Objetivo <em>*</em></label><textarea placeholder="O que você quer comunicar?" id="a3-objetivo"></textarea></div>
+          <div class="field-group"><label class="field-label">Público-alvo</label><input type="text" placeholder="Ex: Parceiros, equipe interna" id="a3-publico"></div>
+          <div class="field-group"><label class="field-label">Copy sugerida</label><textarea placeholder="Texto, slogan ou ideia central" id="a3-copy"></textarea></div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Formato / dimensão</label><input type="text" placeholder="Ex: A4, quadrado 1080 px" id="a3-formato"></div>
+            <div class="field-group"><label class="field-label">Referências visuais</label><input type="text" placeholder="Link ou descrição" id="a3-ref"></div>
+          </div>
+          <div class="field-group"><label class="field-label">Observações / restrições</label><textarea placeholder="Compliance, restrições de cor…" id="a3-obs"></textarea></div>
+          <div class="two-col">
+            <div class="field-group"><label class="field-label">Prazo solicitado <em>*</em></label><input type="date" id="a3-prazo"></div>
+            <div class="field-group">
+              <label class="field-label">Prioridade <em>*</em></label>
+              <div class="priority-row" id="prio-alg3">
+                <div class="prio-btn p-baixa" data-val="Baixa">Baixa</div>
+                <div class="prio-btn p-media" data-val="Média">Média</div>
+                <div class="prio-btn p-alta"  data-val="Alta">Alta</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn-cancel" onclick="clearForm('alg3')">Limpar</button>
+          <button class="btn-submit" onclick="submitDemand('alg3')">Enviar demanda</button>
+        </div>
+      </div>
+
+      <div class="section-card list-card">
+        <div class="section-title"><span class="section-bar"></span>Demandas recentes</div>
+        <div class="demand-list" id="list-alg3"><p class="empty-msg">Nenhuma demanda enviada ainda.</p></div>
+      </div>
+    </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<div class="creditos-icone">
+  <a href="https://www.flaticon.com/br/icones-gratis/sns" title="sns ícones">
+    Sns ícones criados por Freepik - Flaticon
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/trello.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

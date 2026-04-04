@@ -1,0 +1,14 @@
+# ============================================================
+# .gitignore — arquivos que NÃO devem ir para o GitHub/Netlify
+# ============================================================
+
+# Credenciais do Trello — NUNCA suba este arquivo
+.env
+
+# Dados locais (não são mais necessários na nova arquitetura)
+dados.json
+trello-config.json
+
+# Logs e temporários
+*.log
+node_modules/
