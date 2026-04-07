@@ -51,7 +51,7 @@ function formatarData(s) {
 function traduzirStatus(nomeLista) {
   const n = (nomeLista || '').toLowerCase();
   if (n.includes('produção') || n.includes('producao') || n.includes('andamento')) return 'Em produção';
-  if (n.includes('concluí')  || n.includes('concluido') || n.includes('done'))     return 'Concluído';
+  if (n.includes('concluí') || (n.includes('publicado')  || n.includes('concluido') || n.includes('done'))     return 'Concluído';
   return 'Aguardando';
 }
 
